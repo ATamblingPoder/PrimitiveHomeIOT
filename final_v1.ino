@@ -1,6 +1,6 @@
-#define BLYNK_TEMPLATE_ID "TMPL3JnAV-z7f"
+#define BLYNK_TEMPLATE_ID 
 #define BLYNK_TEMPLATE_NAME "HomeIOT"
-#define BLYNK_AUTH_TOKEN "H2tkbMrxbWKraIXcHbUMIR_7mA1HX-lG"
+#define BLYNK_AUTH_TOKEN 
 //#define BLYNK_PRINT Serial
 
 #include <ESP8266WiFi.h>
