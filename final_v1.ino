@@ -103,7 +103,7 @@ void setup(){
   lcd.print("Connecting...");
   Serial.begin(9600);
   pinMode(A0, INPUT);
-  Blynk.begin(BLYNK_AUTH_TOKEN, "Penguin", "not12345678");
+  Blynk.begin(BLYNK_AUTH_TOKEN, , );
   lcd.clear();
   lcd.print("Connected!");
   delay(750);
