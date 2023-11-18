@@ -1,7 +1,8 @@
-#define BLYNK_TEMPLATE_ID 
-#define BLYNK_TEMPLATE_NAME "HomeIOT"
-#define BLYNK_AUTH_TOKEN 
-//#define BLYNK_PRINT Serial
+#define BLYNK_TEMPLATE_ID ""
+#define BLYNK_TEMPLATE_NAME ""
+#define BLYNK_AUTH_TOKEN ""
+// #define BLYNK_PRINT Serial
+// Use your BLYNK AUTHs above
 
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
@@ -14,7 +15,10 @@ Servo myservo;
 
 #define IR_PIN D6
 #define TEMPER_PIN A0
-#define SERVO_PIN D3
+#define SERVO_PIN D4
+#define LIV_ROOM D5
+#define KIT_ROOM D0
+#define BUZZER D7
 
 BlynkTimer timer;
 int doorPresentState = 0;
@@ -38,7 +42,26 @@ void myTimerEvent(){
     lcd.print("WARNING!! Temperature");
     lcd.setCursor(0,1);
     lcd.print("Level Exceeded!!");
+    digitalWrite(BUZZER, HIGH);
   }
+  else{
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Welcome Sam!");
+    lcd.setCursor(0,1);
+    lcd.print("It is ");
+    lcd.setCursor(6,1);
+    lcd.print(current_temp);
+    digitalWrite(BUZZER, LOW);
+  }
+}
+
+BLYNK_WRITE(V0){
+  digitalWrite(LIV_ROOM, param.asInt());
+}
+
+BLYNK_WRITE(V1){
+  digitalWrite(KIT_ROOM, param.asInt());
 }
 
 BLYNK_WRITE(V4){
@@ -83,6 +106,7 @@ BLYNK_WRITE(V2){
         lcd.setCursor(0,1);
         lcd.print("closed autom.");
         Blynk.virtualWrite(V2, doorPresentState);
+        delay(2000);
         break;
       }    
     }
@@ -94,6 +118,11 @@ BLYNK_WRITE(V2){
 
 void setup(){
   pinMode(IR_PIN, INPUT);
+  pinMode(LIV_ROOM, OUTPUT);
+  pinMode(KIT_ROOM, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(D8, OUTPUT);
+  digitalWrite(D8, HIGH);
   myservo.attach(SERVO_PIN);
   myservo.write(0);
   lcd.init();
@@ -103,7 +132,7 @@ void setup(){
   lcd.print("Connecting...");
   Serial.begin(9600);
   pinMode(A0, INPUT);
-  Blynk.begin(BLYNK_AUTH_TOKEN, , );
+  Blynk.begin(BLYNK_AUTH_TOKEN, "", "");  // Put WiFi name followed by Password
   lcd.clear();
   lcd.print("Connected!");
   delay(750);
